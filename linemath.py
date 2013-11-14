@@ -9,6 +9,7 @@ class PromptLineMathCommand(sublime_plugin.WindowCommand):
         try:
             active_view = self.window.active_view()
             if active_view:
+                active_view.run_command("split_selection_into_lines")
                 active_view.run_command("line_math", {"exp": text})
         except ValueError:
             pass
