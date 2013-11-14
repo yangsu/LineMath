@@ -44,10 +44,9 @@ class LineMathCommand(sublime_plugin.TextCommand):
                     sublime.message_dialog(msg)
                     break
 
-                convert = float if '.' in selected else int
                 try:
                     result = self.execExp(selected, exp)
-                    self.view.replace(edit, region, str(convert(result)))
+                    self.view.replace(edit, region, str(result))
                 except:
                     msg = "Invalid syntax: %s" % exp
                     sublime.message_dialog(msg)
