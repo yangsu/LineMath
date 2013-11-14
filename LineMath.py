@@ -1,6 +1,8 @@
 import sublime
 import sublime_plugin
 import re
+import math
+import random
 
 SETTINGS_FILE = "LineMath.sublime-settings"
 
