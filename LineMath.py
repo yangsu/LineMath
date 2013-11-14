@@ -1,11 +1,17 @@
-import sublime, sublime_plugin, re
+import sublime
+import sublime_plugin
+import re
+
+SETTINGS_FILE = "LineMath.sublime-settings"
+
+settings = sublime.load_settings(SETTINGS_FILE)
 
 class PromptLineMathCommand(sublime_plugin.WindowCommand):
     def run(self):
-        self.window.show_input_panel("Expression:", "", self.on_done, None, None)
+        self.window.show_input_panel("Expression:", "", self.done, None, None)
         pass
 
-    def on_done(self, text):
+    def done(self, text):
         try:
             active_view = self.window.active_view()
             if active_view:
@@ -23,10 +29,15 @@ def is_number(s):
         return False
 
 
+def count_regions(selection):
+    count = 0
+    for region in selection:
+        count += 1
+    return count
 
 
 class LineMathCommand(sublime_plugin.TextCommand):
-    ref = '$'
+    ref = settings.get('ref_symbol')
     generatorSyntax = re.compile('^[\d\-:]+$')
 
     def execExp(self, num, text):
@@ -58,9 +69,8 @@ class LineMathCommand(sublime_plugin.TextCommand):
                     self.syntaxError(exp)
                     return
 
-
     def runGenerator(self, edit, exp):
-        parts = exp.split(':')
+        parts = exp.split(settings.get('generator_delimiter'))
         start = int(parts[0])
         try:
             if len(parts) == 2:
@@ -76,11 +86,20 @@ class LineMathCommand(sublime_plugin.TextCommand):
             self.syntaxError(exp)
             return
 
-        i = start
-        for region in self.view.sel():
-            if not end or i <= end:
-                self.view.replace(edit, region, str(i))
-            i += step
+        selection = self.view.sel()
+        count = count_regions(selection)
+        if count == 1:
+            for region in self.view.sel():
+                end = end or settings.get('generator_default_limit')
+                numbers = [str(i) for i in range(start, end + 1, step)]
+                print(numbers)
+                self.view.replace(edit, region, ','.join(numbers))
+        else:
+            i = start
+            for region in self.view.sel():
+                if not end or i <= end:
+                    self.view.replace(edit, region, str(i))
+                i += step
 
     def run(self, edit, exp):
         if self.generatorSyntax.match(exp):

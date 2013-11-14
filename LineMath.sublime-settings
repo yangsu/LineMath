@@ -1,0 +1,16 @@
+{
+  // You can use this symbol in expressions to refer to the value of the
+  // selected text
+  "ref_symbol": "$",
+
+  // delimiter used to separate start, step, and end values for generators
+  "generator_delimiter": ":",
+
+  // when using generator expressions on a single selection, the default limit
+  // when the end parameter is not provided
+  "generator_default_limit": 10,
+
+  // when using generator expressions on a single selection, the sequence is
+  // stringed together using the following separator
+  "generator_output_separator": ", "
+}
