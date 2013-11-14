@@ -94,9 +94,9 @@ class LineMathCommand(sublime_plugin.TextCommand):
         count = count_regions(selection)
         if count == 1:
             for region in self.view.sel():
-                end = end or start + settings.get('generator_default_count')
-                numbers = [str(i) for i in range(start, end + 1, step)]
-                print(numbers)
+                count = settings.get('generator_default_count')
+                end = end if end is not None else start + count * step
+                numbers = [str(i) for i in range(start, end + step, step)]
                 self.view.replace(edit, region, ','.join(numbers))
         else:
             i = start
