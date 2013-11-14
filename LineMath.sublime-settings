@@ -3,12 +3,15 @@
   // selected text
   "ref_symbol": "$",
 
+  // for expression results, remove trailing zeroes after the decimal point
+  "remove_trailing_zeroes": true,
+
   // delimiter used to separate start, step, and end values for generators
   "generator_delimiter": ":",
 
-  // when using generator expressions on a single selection, the default limit
-  // when the end parameter is not provided
-  "generator_default_limit": 10,
+  // when using generator expressions on a single selection, the default count
+  // of numbers to generate
+  "generator_default_count": 10,
 
   // when using generator expressions on a single selection, the sequence is
   // stringed together using the following separator

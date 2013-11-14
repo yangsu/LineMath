@@ -65,7 +65,8 @@ class LineMathCommand(sublime_plugin.TextCommand):
 
                 try:
                     result = self.execExp(selected, exp)
-                    result = re.sub(r'\.0', '', str(result))
+                    if settings.get('remove_trailing_zeroes'):
+                        result = re.sub(r'\.0', '', str(result))
                     self.view.replace(edit, region, result)
                 except:
                     self.syntaxError(exp)
