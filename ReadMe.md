@@ -32,11 +32,23 @@ Write any simple expressions such as `+1` (increment each selection by 1) or any
 
 #### Demo
 
+![Simple Expression](http://f.cl.ly/items/1W3a3Z280l2Q0T143G3y/simple.gif)
+![Complex Expression](http://f.cl.ly/items/2r1L030x2S2g1R3g0T38/complex.gif)
+
 ### Generator
 
 You can also use a special kind of expression to generate number sequences. The syntax is `<start>:<end>` or `<start>:<step>:<end>`. `<end>` is optional. When no `<end>` is specifed, the generator will generate 1 number per selection if there are multiple selections and a sequence of numbers of a predefined size will be generated inline.
 
 #### Demo
+
+##### Multiple Selection
+
+![Start](http://f.cl.ly/items/3b3w170b2P3N1c3e3N3Z/start.gif)
+![Start and End](http://f.cl.ly/items/0Q2m3s3X462Q18302p0v/startend.gif)
+![Start and Step](http://f.cl.ly/items/3f2u3M2S0D2R463W3Y0u/startstep.gif)
+
+##### Single Selection
+![start step end](http://f.cl.ly/items/0n1H0u3r3g3O2f083d2r/startstepend.gif)
 
 ## Preferences
 
