@@ -40,7 +40,8 @@ def count_regions(selection):
 
 class LineMathCommand(sublime_plugin.TextCommand):
     ref = settings.get('ref_symbol')
-    generatorSyntax = re.compile('^[\d\-:]+$')
+    regex = '^[\d\-%s]+$' % settings.get('generator_delimiter')
+    generatorSyntax = re.compile(regex)
 
     def execExp(self, num, text):
         numstr = "(%s)" % num
@@ -93,7 +94,7 @@ class LineMathCommand(sublime_plugin.TextCommand):
         count = count_regions(selection)
         if count == 1:
             for region in self.view.sel():
-                end = end or settings.get('generator_default_limit')
+                end = end or start + settings.get('generator_default_count')
                 numbers = [str(i) for i in range(start, end + 1, step)]
                 print(numbers)
                 self.view.replace(edit, region, ','.join(numbers))
