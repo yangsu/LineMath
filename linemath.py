@@ -13,25 +13,41 @@ class PromptLineMathCommand(sublime_plugin.WindowCommand):
         except ValueError:
             pass
 
+
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+
+
+ref = '$'
+
+
 class LineMathCommand(sublime_plugin.TextCommand):
-    syntax = re.compile('[+\-\*\/\^](\d+(\.\d*))?')
-
-    def checkSyntax(self, text):
-        return self.syntax.match(text)
-
     def execExp(self, num, text):
-        print(num + text)
-        return eval(num + text)
+        numstr = "(%s)" % num
+        if ref in text:
+            exp = text.replace(ref, numstr)
+        else:
+            exp = numstr + text
+        return eval(exp)
 
     def run(self, edit, exp):
-        if self.checkSyntax(exp):
-            for region in self.view.sel():
-                if not region.empty():
-                    selected = self.view.substr(region)
-                    convert = float if '.' in selected else int
+        for region in self.view.sel():
+            if not region.empty():
+                selected = self.view.substr(region)
+                if not is_number(selected):
+                    msg = "%s is not a number" % selected
+                    sublime.message_dialog(msg)
+                    break
+
+                convert = float if '.' in selected else int
+                try:
                     result = self.execExp(selected, exp)
                     self.view.replace(edit, region, str(convert(result)))
-
-        else:
-            msg = "Invalid syntax: %s" % exp
-            sublime.message_dialog(msg)
+                except:
+                    msg = "Invalid syntax: %s" % exp
+                    sublime.message_dialog(msg)
+                    break
