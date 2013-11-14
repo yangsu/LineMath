@@ -46,7 +46,8 @@ class LineMathCommand(sublime_plugin.TextCommand):
 
                 try:
                     result = self.execExp(selected, exp)
-                    self.view.replace(edit, region, str(result))
+                    result = re.sub(r'\.0', '', str(result))
+                    self.view.replace(edit, region, result)
                 except:
                     msg = "Invalid syntax: %s" % exp
                     sublime.message_dialog(msg)
