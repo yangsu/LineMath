@@ -1,12 +1,22 @@
 import sublime
 import sublime_plugin
 import re
+import sys
 import math
 import random
 
 SETTINGS_FILE = "LineMath.sublime-settings"
+st2 = (sys.version_info[0] == 2)
+settings = {}
 
-settings = sublime.load_settings(SETTINGS_FILE)
+
+def plugin_loaded():
+    global settings
+    settings = sublime.load_settings(SETTINGS_FILE)
+
+if st2:
+    sublime.set_timeout(plugin_loaded, 0)
+
 
 class PromptLineMathCommand(sublime_plugin.WindowCommand):
     def run(self):
@@ -39,9 +49,11 @@ def count_regions(selection):
 
 
 class LineMathCommand(sublime_plugin.TextCommand):
-    ref = settings.get('ref_symbol')
-    regex = '^[\d\-%s]+$' % settings.get('generator_delimiter')
-    generatorSyntax = re.compile(regex)
+    def __init__(self, view):
+        self.view = view
+        self.ref = settings.get('ref_symbol')
+        regex = '^[\d\-%s]+$' % settings.get('generator_delimiter')
+        self.generatorSyntax = re.compile(regex)
 
     def execExp(self, num, text):
         numstr = "(%s)" % num
